@@ -1,4 +1,4 @@
-"""Settings, all from environment variables (see studio/.env.example)."""
+"""Settings, all from environment variables (see .env.example)."""
 from __future__ import annotations
 
 import os
@@ -6,10 +6,34 @@ import shutil
 from pathlib import Path
 
 STUDIO_DIR = Path(__file__).resolve().parent.parent
-REPO_DIR = STUDIO_DIR.parent
 
 DATA_DIR = Path(os.environ.get("STUDIO_DATA", STUDIO_DIR / "data")).resolve()
-TRIPS_DIR = Path(os.environ.get("TRIPS_DIR", REPO_DIR / "trips")).resolve()
+
+
+def _default_trips_dir() -> Path:
+    """Where to look for trip itineraries when TRIPS_DIR is not set.
+
+    The studio used to live inside the tagalong repo as `studio/`, so the default was
+    `../trips` — the bot's own trip folder. As a standalone repo that path points outside
+    the checkout entirely, so `./trips` is the default now.
+
+    The sibling layout is still honoured when it is actually there, because running this
+    next to a tagalong clone is a genuinely useful setup: the studio then titles each
+    day's edit from the real plan and knows where every shot was filmed.
+    """
+    here = STUDIO_DIR / "trips"
+    if here.is_dir():
+        return here
+    sibling = STUDIO_DIR.parent / "tagalong" / "trips"
+    if sibling.is_dir():
+        return sibling
+    legacy = STUDIO_DIR.parent / "trips"   # the old in-repo layout
+    if legacy.is_dir():
+        return legacy
+    return here
+
+
+TRIPS_DIR = Path(os.environ.get("TRIPS_DIR") or _default_trips_dir()).resolve()
 TIMEZONE = os.environ.get("STUDIO_TZ", "Europe/Dublin")  # Dublin and London share the same offset
 
 PASSWORD = os.environ.get("STUDIO_PASSWORD", "")

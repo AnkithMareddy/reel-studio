@@ -1,6 +1,6 @@
 """Fast checks for the parts with real logic: beats, timeline, grades, speech grouping, audio ducking.
 
-Run from studio/:  python -m pytest -q tests
+Run from the repo root:  python -m pytest -q tests
 """
 import math
 import subprocess

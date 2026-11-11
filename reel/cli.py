@@ -168,7 +168,9 @@ def cmd_doctor(a):
 
     _p("\nTrip + files")
     from . import trip as _trip
-    line(bool(_trip.days()), f"itinerary: {len(_trip.days())} days from {config.TRIPS_DIR}", "run from inside the repo")
+    line(bool(_trip.days()), f"itinerary: {len(_trip.days())} days from {config.TRIPS_DIR}",
+         "no itineraries found - set TRIPS_DIR, or add trips/<name>/itinerary.json (optional: "
+         "the studio works without one, it just cannot title edits from the day's plan)")
     du = shutil.disk_usage(config.DATA_DIR)
     line(du.free > 20e9, f"studio data: {config.DATA_DIR} ({du.free / 1e9:.0f} GB free)", "free up disk space (4K needs room)")
     inbox = Path(__import__("os").environ.get("STUDIO_INBOX", config.DATA_DIR / "inbox")).expanduser()

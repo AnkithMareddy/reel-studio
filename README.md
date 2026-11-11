@@ -1,8 +1,27 @@
 # Reel Studio 🎬
 
-The trip's own video editor. Every night you drop the day's GoPro and iPhone footage on the Mac. By morning there's a **vertical Instagram vlog**, a **YouTube episode**, a **cinematic short**, a **teaser reel** and a **photo dump** for that day, all cut to the day's song and colour-graded. A **trip film** rebuilds itself as the days add up.
+An AI video editor that turns a day's raw footage into finished edits overnight, on your own Mac.
 
-It lives next to the trip bot and reads the same itinerary (`../trips/*/itinerary.json`). Each day's edits are titled with that day's plan, and every shot knows where you were when it was filmed.
+Drop the day's GoPro and iPhone files in. By morning there's a **vertical Instagram vlog**, a **YouTube episode**, a **cinematic short**, a **teaser reel** and a **photo dump**, each cut to the day's song and colour-graded. A **trip film** rebuilds itself as the days add up.
+
+Nothing is uploaded to a render farm: the footage is analysed, transcribed and cut locally, and the only thing that leaves the machine is contact sheets and transcripts sent to Claude to plan the story — and it falls back to a rule-based editor with no API key at all.
+
+> Built for a London city break and an Ireland road trip in October 2026, where it cut every day's footage overnight. It started life inside [tagalong](https://github.com/AnkithMareddy/tagalong), the travel bot that ran those trips, and is now its own repo.
+
+## Optional: pair it with an itinerary
+
+The studio runs perfectly well on footage alone. If you give it an itinerary it gets better: each day's edit is titled from that day's plan, and every shot knows where it was filmed.
+
+It looks for `trips/<name>/itinerary.json`, in this order:
+
+1. `$TRIPS_DIR`, if you set it
+2. `./trips` inside this repo
+3. `../tagalong/trips` — a [tagalong](https://github.com/AnkithMareddy/tagalong) clone sitting next to this one
+
+```bash
+export TRIPS_DIR=~/my-trips     # anywhere you like
+./studio doctor                 # says which one it found
+```
 
 | Format | For | Shape |
 |---|---|---|
